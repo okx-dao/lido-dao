@@ -26,6 +26,7 @@ const accounts = readJson(`./accounts.json`) || {
   eth: { dev: 'remote' },
   etherscan: { apiKey: undefined },
   infura: { projectId: undefined },
+  alchemy: { apiKey: undefined },
   infura_ipfs: { projectId: undefined, projectSecret: undefined }
 }
 
@@ -79,7 +80,8 @@ const getNetConfig = (networkName, ethAccountName) => {
     },
     goerli: {
       ...base,
-      url: 'https://goerli.infura.io/v3/' + accounts.infura.projectId,
+      // url: 'https://goerli.infura.io/v3/' + accounts.infura.projectId,
+      url: 'https://eth-goerli.g.alchemy.com/v2/' + accounts.alchemy.apiKey,
       chainId: 5,
       timeout: 60000 * 10
     },

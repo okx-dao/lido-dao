@@ -9,7 +9,7 @@ const { readNetworkState, persistNetworkState, updateNetworkState } = require('.
 const { deployAPM, resolveLatestVersion } = require('./components/apm')
 const { getENSNodeOwner } = require('./components/ens')
 
-const LIDO_ENS_LABEL = process.env.LIDO_ENS_LABEL || 'lidopm'
+const LIDO_ENS_LABEL = process.env.LIDO_ENS_LABEL || 'okxpm'
 const DAO_TEMPLATE_ENS_LABEL = process.env.DAO_TEMPLATE_ENS_LABEL || 'template'
 const NETWORK_STATE_FILE = process.env.NETWORK_STATE_FILE || 'deployed.json'
 

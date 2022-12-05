@@ -1,0 +1,55 @@
+{
+  "networkId": 5,
+  "ipfsAPI": "http://127.0.0.1:5001/api/v0",
+  "daoAragonId": "okx-dao",
+  "multisigAddress": "0x3A8592A239B06aF8e72F4E2cB9a83B0bFc4E284f",
+  "lidoApmEnsName": "okxpm.eth",
+  "lidoApmEnsRegDurationSec": 94608000,
+  "daoInitialSettings": {
+    "token": {
+      "name": "Test XLido DAO Token",
+      "symbol": "XLDO"
+    },
+    "beaconSpec": {
+      "depositContractAddress": "0x04ef280d9379968e76A69148d8F84F6cB73D602a",
+      "epochsPerFrame": 10,
+      "slotsPerEpoch": 32,
+      "secondsPerSlot": 12,
+      "genesisTime": 1616508000
+    },
+    "voting": {
+      "minSupportRequired": "500000000000000000",
+      "minAcceptanceQuorum": "50000000000000000",
+      "voteDuration": 14400
+    },
+    "fee": {
+      "totalPercent": 10,
+      "treasuryPercent": 0,
+      "insurancePercent": 50,
+      "nodeOperatorsPercent": 50
+    }
+  },
+  "vestingParams": {
+    "unvestedTokensAmount": "230000000000000000000000",
+    "holders": {
+      "0x3A8592A239B06aF8e72F4E2cB9a83B0bFc4E284f": "530000000000000000000000",
+      "0xd3a9eeFA8B45161D5fE8DCb463Dae08EbF02EcFA": "15000000000000000000000",
+      "0x942bdc420A8D7b6c749e259DA53Fa475eFf5cF54": "15000000000000000000000",
+      "0x4F0309A5C6e3FD434EC37563ccb462866927F484": "15000000000000000000000",
+      "0xeb3ec3E3a7d9c38A9054304649ed7b66E5F656EA": "15000000000000000000000",
+      "0x8C7dcDDB2B0baD9691Da42f3a5A8B92FA52B0eB4": "15000000000000000000000",
+      "0x4f78881f280d7d306f8Fb1C882a0d4C3c3Ccc699": "15000000000000000000000",
+      "0x874AD5D894A14d41d3821A3544C084FaF0bbfDa8": "15000000000000000000000",
+      "0x0F137eA9bad2146121423330DD0DCa169cdb9EC9": "15000000000000000000000"
+    },
+    "start": 1639659600,
+    "cliff": 1639660100,
+    "end": 1639660100,
+    "revokable": false
+  },
+  "selfOwnedStETHBurnerParams": {
+    "totalCoverSharesBurnt": 0,
+    "totalNonCoverSharesBurnt": 0,
+    "maxBurnAmountPerRunBasisPoints": 4
+  }
+}

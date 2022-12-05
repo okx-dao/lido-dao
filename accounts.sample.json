@@ -25,6 +25,9 @@
   "etherscan": {
     "apiKey": "ETHERSCAN_API_KEY"
   },
+  "alchemy": {
+    "apiKey": "ALCHEMY_API_KEY"
+  },
   "infura_ipfs": {
     "projectId": "",
     "projectSecret": ""

@@ -28,27 +28,31 @@
   ],
   "environments": {
     "default": {
-      "appName": "oracle.lidopm.eth",
+      "appName": "oracle.okxpm.eth",
       "network": "development"
     },
+    "goerli": {
+      "appName": "oracle.okxpm.eth",
+      "network": "goerli"
+    },
     "rinkeby": {
-      "appName": "oracle.lidopm.eth",
+      "appName": "oracle.okxpm.eth",
       "network": "rinkeby"
     },
     "mainnet-test": {
-      "appName": "oracle.lidopm.eth",
+      "appName": "oracle.okxpm.eth",
       "network": "mainnet"
     },
     "mainnet": {
-      "appName": "oracle.lidopm.eth",
+      "appName": "oracle.okxpm.eth",
       "network": "mainnet"
     },
     "localhost": {
-      "appName": "oracle.lidopm.eth",
+      "appName": "oracle.okxpm.eth",
       "network": "development",
       "registry": "0xa16E02E87b7454126E5E10d957A927A7F5B5d2be"
     }
   },
-  "appName": "oracle.lidopm.eth",
+  "appName": "oracle.okxpm.eth",
   "path": "../../contracts/0.4.24/oracle/LidoOracle.sol"
 }

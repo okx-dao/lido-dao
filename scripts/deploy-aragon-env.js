@@ -17,6 +17,9 @@ const NETWORK_STATE_FILE = process.env.NETWORK_STATE_FILE || 'deployed.json'
 
 const ZERO_ADDR = '0x0000000000000000000000000000000000000000'
 
+function wait(ms) {
+  return new Promise((resolve) => setTimeout(() => resolve(), ms))
+}
 async function deployAragonEnv({ web3, artifacts, networkStateFile = NETWORK_STATE_FILE }) {
   const netId = await web3.eth.net.getId()
   const accounts = await getAccounts(web3)
@@ -177,6 +180,8 @@ async function useOrDeployAPMRegistryFactory({
 }
 
 async function deployDAOFactory({ artifacts, owner, kernelBaseAddress, aclBaseAddress, withEvmScriptRegistryFactory }) {
+  log(`sleep 60s`)
+  await wait(60000)
   const kernelBase = await useOrDeploy(
     'Kernel',
     artifacts,
@@ -185,18 +190,26 @@ async function deployDAOFactory({ artifacts, owner, kernelBaseAddress, aclBaseAd
     withArgs(true, { from: owner })
   )
 
+  log(`sleep 60s`)
+  await wait(60000)
   const aclBase = await useOrDeploy('ACL', artifacts, aclBaseAddress, withArgs({ from: owner }))
 
+  log(`sleep 60s`)
+  await wait(60000)
   const evmScriptRegistryFactory = withEvmScriptRegistryFactory
     ? await deploy('EVMScriptRegistryFactory', artifacts, withArgs({ from: owner }))
     : undefined
 
+  log(`sleep 60s`)
+  await wait(60000)
   const daoFactory = await deploy(
     'DAOFactory',
     artifacts,
     withArgs(kernelBase.address, aclBase.address, evmScriptRegistryFactory ? evmScriptRegistryFactory.address : ZERO_ADDR, { from: owner })
   )
 
+  log(`sleep 60s`)
+  await wait(60000)
   return {
     kernelBase,
     aclBase,
@@ -206,7 +219,11 @@ async function deployDAOFactory({ artifacts, owner, kernelBaseAddress, aclBaseAd
 }
 
 async function deployMiniMeTokenFactory({ artifacts, owner, miniMeTokenFactoryAddress }) {
+  log(`sleep 60s`)
+  await wait(60000)
   const factory = await useOrDeploy('MiniMeTokenFactory', artifacts, miniMeTokenFactoryAddress, withArgs({ from: owner }))
+  log(`sleep 60s`)
+  await wait(60000)
   return { miniMeTokenFactory: factory }
 }
 
@@ -214,6 +231,8 @@ async function deployAragonID({ artifacts, owner, ens, aragonIDAddress }) {
   const FIFSResolvingRegistrar = artifacts.require('FIFSResolvingRegistrar')
   if (aragonIDAddress != null) {
     log(`Using FIFSResolvingRegistrar: ${chalk.yellow(aragonIDAddress)}`)
+    log(`sleep 60s`)
+    await wait(60000)
     return {
       aragonID: await FIFSResolvingRegistrar.at(aragonIDAddress)
     }
@@ -227,9 +246,13 @@ async function deployAragonID({ artifacts, owner, ens, aragonIDAddress }) {
   const node = namehash(nodeName)
   log(`ENS node: ${chalk.yellow(nodeName)} (${node})`)
 
+  log(`sleep 60s`)
+  await wait(60000)
   const aragonID = await deploy('FIFSResolvingRegistrar', artifacts, withArgs(ens.address, publicResolverAddress, node, { from: owner }))
 
   logSplitter()
+  log(`sleep 60s`)
+  await wait(60000)
   await assignENSName({
     parentName: 'eth',
     labelName: 'aragonid',
@@ -240,8 +263,12 @@ async function deployAragonID({ artifacts, owner, ens, aragonIDAddress }) {
   })
 
   logSplitter()
+  log(`sleep 60s`)
+  await wait(60000)
   await logTx(`Assigning owner name`, aragonID.register('0x' + keccak256('owner'), owner, { from: owner }))
 
+  log(`sleep 60s`)
+  await wait(60000)
   return { aragonID, aragonIDEnsNodeName: nodeName, aragonIDEnsNode: node }
 }
 

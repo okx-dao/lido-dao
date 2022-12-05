@@ -1,40 +1,43 @@
 const fs = require('fs')
 const path = require('path')
 const chalk = require('chalk')
+const { assert } = require('chai')
 const { hash: namehash } = require('eth-ens-namehash')
 const buidlerTaskNames = require('@nomiclabs/buidler/builtin-tasks/task-names')
 const hardhatTaskNames = require('hardhat/builtin-tasks/task-names')
 
-
-const runOrWrapScript = require('./helpers/run-or-wrap-script')
-const { log, logSplitter, logWideSplitter, logHeader, logTx } = require('./helpers/log')
-const { exec, execLive } = require('./helpers/exec')
-const { readJSON } = require('./helpers/fs')
+const runOrWrapScript = require('../helpers/run-or-wrap-script')
+const { log, logSplitter, logWideSplitter, logHeader, logTx } = require('../helpers/log')
+const { useOrGetDeployed } = require('../helpers/deploy')
+const { readNetworkState, persistNetworkState, assertRequiredNetworkState } = require('../helpers/persisted-network-state')
+const { exec, execLive } = require('../helpers/exec')
+const { readJSON } = require('../helpers/fs')
 
 // this is needed for the next two `require`s to work, some kind of typescript path magic
 require('@aragon/buidler-aragon/dist/bootstrap-paths')
 
 const { generateArtifacts } = require('@aragon/buidler-aragon/dist/src/utils/artifact/generateArtifacts')
+const { uploadDirToIpfs } = require('@aragon/buidler-aragon/dist/src/utils/ipfs')
+const { toContentUri } = require('@aragon/buidler-aragon/dist/src/utils/apm/utils')
 
-const { APP_NAMES } = require('./multisig/constants')
+const { APP_NAMES } = require('./constants')
 const VALID_APP_NAMES = Object.entries(APP_NAMES).map((e) => e[1])
 
+const REQUIRED_NET_STATE = ['lidoApmEnsName', 'ipfsAPI']
 
 const APPS = process.env.APPS || '*'
-const APPS_DIR_PATH = process.env.APPS_DIR_PATH || path.resolve(__dirname, '..', 'apps')
-const LIDO_APM_ENS_NAME = 'okxpm.eth'
+const APPS_DIR_PATH = process.env.APPS_DIR_PATH || path.resolve(__dirname, '..', '..', 'apps')
 
-async function publishAppFrontends({
-  web3,
-  appsDirPath = APPS_DIR_PATH,
-  appDirs = APPS
-}) {
+async function publishAppFrontends({ web3, artifacts, appsDirPath = APPS_DIR_PATH, appDirs = APPS }) {
   const netId = await web3.eth.net.getId()
 
   logWideSplitter()
   log(`Network ID: ${chalk.yellow(netId)}`)
 
   appsDirPath = path.resolve(appsDirPath)
+
+  const state = readNetworkState(network.name, netId)
+  assertRequiredNetworkState(state, REQUIRED_NET_STATE)
 
   if (appDirs && appDirs !== '*') {
     appDirs = appDirs.split(',')
@@ -47,14 +50,21 @@ async function publishAppFrontends({
   for (const appDir of appDirs) {
     let app
     try {
-      app = await publishAppFrotnend(appDir, appsDirPath, LIDO_APM_ENS_NAME)
+      app = await publishAppFrontend(appDir, appsDirPath, state.ipfsAPI, state.lidoApmEnsName)
     } finally {
       process.chdir(cwd)
     }
+    console.log(app)
+    persistNetworkState(network.name, netId, state, {
+      [`app:${app.name}`]: {
+        ...state[`app:${app.name}`],
+        ...app
+      }
+    })
   }
 }
 
-async function publishAppFrotnend(appDir, appsDirPath, lidoApmEnsName) {
+async function publishAppFrontend(appDir, appsDirPath, ipfsAPI, lidoApmEnsName) {
   logHeader(`Publishing frontend of the app '${appDir}'`)
 
   const appRootPath = path.resolve(appsDirPath, appDir)
@@ -97,7 +107,7 @@ async function publishAppFrotnend(appDir, appsDirPath, lidoApmEnsName) {
       return await run(taskName)
     }
     // buidler-aragon tries to get flattened source code of all contracts and fails to
-    // parce Solidity syntax newer than 0.4 (which we have in non-Aragon contracts), so
+    // parse Solidity syntax newer than 0.4 (which we have in non-Aragon contracts), so
     // here we're flattening only the app's dependency graph instead
     return await run(hardhatTaskNames.TASK_FLATTEN_GET_FLATTENED_SOURCE, {
       files: [contractPath]
@@ -108,9 +118,18 @@ async function publishAppFrotnend(appDir, appsDirPath, lidoApmEnsName) {
   await generateArtifacts(distPath, bre)
 
   logSplitter()
-  
-  log(`App dist: ${chalk.yellow(distPath)}`)
+  log('Uploading to IPFS...')
 
+  const rootCid = await uploadDirToIpfs({ dirPath: distPath, ipfsApiUrl: ipfsAPI })
+  log(`Content root CID: ${chalk.yellow(rootCid)}`)
+
+  return {
+    fullName: appFullName,
+    name: appName,
+    id: appId,
+    ipfsCid: rootCid,
+    contentURI: toContentUri('ipfs', rootCid)
+  }
 }
 
 async function readArappJSON(appRoot, netName) {
