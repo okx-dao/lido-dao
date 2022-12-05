@@ -54,7 +54,14 @@ function PanelContent({ addNodeOperatorApi, onClose }) {
               required
               component={TextField}
             />
-
+            <Field
+              name="limit"
+              label="Limit"
+              type="number"
+              required
+              component={TextField}
+            />
+            
             <Button
               mode="strong"
               wide
