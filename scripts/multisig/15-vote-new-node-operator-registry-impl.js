@@ -122,18 +122,17 @@ async function upgradeAppImpl({ web3, artifacts, appName = APP }) {
       to: state.daoAddress,
       calldata: await kernel.contract.methods.setApp(APP_BASES_NAMESPACE, appId, appBaseAddress).encodeABI()
     },
-    {
-      // acl.createPermission(voting, nodeOperatorRegistry, SET_REPORT_BOUNDARIES, voting)
-      to: aclAddress,
-      calldata: await acl.contract.methods.createPermission(votingAddress, appAddress, SET_REPORT_BOUNDARIES, votingAddress).encodeABI()
-    },
-    {
-      // acl.createPermission(voting, nodeOperatorRegistry, SET_BEACON_REPORT_RECEIVER, voting)
-      to: aclAddress,
-      calldata: await acl.contract.methods
-        .createPermission(votingAddress, appAddress, SET_BEACON_REPORT_RECEIVER, votingAddress)
-        .encodeABI()
-    }
+    // {
+    //   // acl.createPermission(voting, nodeOperatorRegistry, SET_REPORT_BOUNDARIES, voting)
+    //   to: aclAddress,
+    //   calldata: await acl.contract.methods.createPermission(votingAddress, appAddress, SET_REPORT_BOUNDARIES, votingAddress).encodeABI()
+    // },
+    // {
+    //   // acl.createPermission(voting, nodeOperatorRegistry, SET_BEACON_REPORT_RECEIVER, voting)
+    //   to: aclAddress,
+    //   calldata: await acl.contract.methods
+    //     .createPermission(votingAddress, appAddress, SET_BEACON_REPORT_RECEIVER, votingAddress)
+    //     .encodeABI()
     // },
     // {
     //   // oracle.initialize_v2(1000, 500) - beacon balance bounds 10% annual increase, 5% instant decrease
