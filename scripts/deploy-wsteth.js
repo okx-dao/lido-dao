@@ -24,7 +24,7 @@ async function deployWstEthContract({ web3, artifacts }) {
   const wstethContractResults = await deployWsteth({
     artifacts,
     stEthAddress,
-    deployer,
+    deployer
   })
 
   logSplitter()
