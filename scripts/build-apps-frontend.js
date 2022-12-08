@@ -5,7 +5,6 @@ const { hash: namehash } = require('eth-ens-namehash')
 const buidlerTaskNames = require('@nomiclabs/buidler/builtin-tasks/task-names')
 const hardhatTaskNames = require('hardhat/builtin-tasks/task-names')
 
-
 const runOrWrapScript = require('./helpers/run-or-wrap-script')
 const { log, logSplitter, logWideSplitter, logHeader, logTx } = require('./helpers/log')
 const { exec, execLive } = require('./helpers/exec')
@@ -19,16 +18,11 @@ const { generateArtifacts } = require('@aragon/buidler-aragon/dist/src/utils/art
 const { APP_NAMES } = require('./multisig/constants')
 const VALID_APP_NAMES = Object.entries(APP_NAMES).map((e) => e[1])
 
-
 const APPS = process.env.APPS || '*'
 const APPS_DIR_PATH = process.env.APPS_DIR_PATH || path.resolve(__dirname, '..', 'apps')
-const LIDO_APM_ENS_NAME = 'lidopm.eth'
+const LIDO_APM_ENS_NAME = 'okxpm.eth'
 
-async function publishAppFrontends({
-  web3,
-  appsDirPath = APPS_DIR_PATH,
-  appDirs = APPS
-}) {
+async function publishAppFrontends({ web3, appsDirPath = APPS_DIR_PATH, appDirs = APPS }) {
   const netId = await web3.eth.net.getId()
 
   logWideSplitter()
@@ -108,9 +102,8 @@ async function publishAppFrotnend(appDir, appsDirPath, lidoApmEnsName) {
   await generateArtifacts(distPath, bre)
 
   logSplitter()
-  
-  log(`App dist: ${chalk.yellow(distPath)}`)
 
+  log(`App dist: ${chalk.yellow(distPath)}`)
 }
 
 async function readArappJSON(appRoot, netName) {

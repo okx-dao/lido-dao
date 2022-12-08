@@ -8,7 +8,7 @@ const { readNetworkState, persistNetworkState } = require('./helpers/persisted-n
 
 async function deployWstEthContract({ web3, artifacts }) {
   const netId = await web3.eth.net.getId()
-  const network = hre.network.name
+  const network = hre.network
 
   logWideSplitter()
   log(`Network ID: ${chalk.yellow(netId)}`)
@@ -24,7 +24,7 @@ async function deployWstEthContract({ web3, artifacts }) {
   const wstethContractResults = await deployWsteth({
     artifacts,
     stEthAddress,
-    deployer,
+    deployer
   })
 
   logSplitter()

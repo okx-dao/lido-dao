@@ -54,27 +54,31 @@
   ],
   "environments": {
     "default": {
-      "appName": "node-operators-registry.lidopm.eth",
+      "appName": "node-operators-registry.okxpm.eth",
       "network": "development"
     },
+    "goerli": {
+      "appName": "node-operators-registry.okxpm.eth",
+      "network": "goerli"
+    },
     "rinkeby": {
-      "appName": "node-operators-registry.lidopm.eth",
+      "appName": "node-operators-registry.okxpm.eth",
       "network": "rinkeby"
     },
     "mainnet-test": {
-      "appName": "node-operators-registry.lidopm-pre.eth",
+      "appName": "node-operators-registry.okxpm-pre.eth",
       "network": "mainnet"
     },
     "mainnet": {
-      "appName": "node-operators-registry.lidopm.eth",
+      "appName": "node-operators-registry.okxpm.eth",
       "network": "mainnet"
     },
     "localhost": {
-      "appName": "node-operators-registry.lidopm.eth",
+      "appName": "node-operators-registry.okxpm.eth",
       "network": "development",
       "registry": "0xa16E02E87b7454126E5E10d957A927A7F5B5d2be"
     }
   },
-  "appName": "node-operators-registry.lidopm.eth",
+  "appName": "node-operators-registry.okxpm.eth",
   "path": "../../contracts/0.4.24/nos/NodeOperatorsRegistry.sol"
 }
