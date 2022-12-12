@@ -12,7 +12,7 @@ async function deployWstEthContract({ web3, artifacts }) {
 
   logWideSplitter()
   log(`Network ID: ${chalk.yellow(netId)}`)
-  log(`Network name: ${chalk.yellow(network)}`)
+  log(`Network name: ${chalk.yellow(network.name)}`)
 
   const state = readNetworkState(network.name, netId)
   const [deployer] = await web3.eth.getAccounts()
