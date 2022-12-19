@@ -1,3 +1,12 @@
+/**
+  * @title Vote to add a new node operator
+  * @param operatorName node operator's name
+  * @param operatorAddr node operator's addr
+  * @dev transaction file to be sent then
+  * use "yarn hardhat --network [net]  tx --from [addr] --file tx-99-1-create-vote-add-node-operator-${operatorName}.json"
+  * to send transaction
+  */
+
 const { encodeCallScript } = require('@aragon/contract-helpers-test/src/aragon-os')
 
 const runOrWrapScript = require('../helpers/run-or-wrap-script')
